@@ -1,0 +1,346 @@
+const fs = require('fs');
+const path = require('path');
+
+const courseDefs = [
+  {
+    id: 'chc52021-diploma-of-community-services',
+    code: 'CHC52021',
+    title: 'Diploma of Community Services',
+    cricos: '112630E',
+    category: 'Community Services',
+    categorySlug: 'community-services',
+    duration: '104 Weeks (80 Academic + 24 Holidays)',
+    terms: '8 Terms (10 weeks each)',
+    studyMode: 'Face-to-Face & Practical Work Placement (20 hrs/week)',
+    level: 'Diploma',
+    campus: 'Parramatta Campus, Sydney',
+    image: '/images/course-chc52021.png',
+    featured: true,
+    description: 'This qualification reflects the roles of community services, case management and social housing workers involved in the managing, coordinating and delivering of person-centred services to individuals, groups and communities.',
+    careerOutcomes: [
+      'Community Services Case Manager',
+      'Family Support Worker',
+      'Social Housing Coordinator',
+      'Community Development Officer',
+      'Youth Case Worker',
+      'Crisis Intervention Specialist'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Completion of Australian Year 12 (HSC) or equivalent overseas qualification',
+      'IELTS 6.0 overall (no band less than 5.5) or equivalent recognised English test',
+      'National Police Check and Working With Children Check (WWCC) required for work placement'
+    ],
+    unitsSummary: '16 units (8 core units and 8 elective units)'
+  },
+  {
+    id: 'aur30620-certificate-iii-in-light-vehicle-mechanical-technology',
+    code: 'AUR30620',
+    title: 'Certificate III in Light Vehicle Mechanical Technology',
+    cricos: '106393H',
+    category: 'Automotive Mechanic',
+    categorySlug: 'automotive',
+    duration: '94 Weeks (76 Academic + 18 Holidays)',
+    terms: '7.6 Terms (approx. 2 years)',
+    studyMode: 'Theory & Extensive Hands-on Automotive Workshop Practice',
+    level: 'Certificate III',
+    campus: 'Parramatta Campus & Automotive Workshop Facility',
+    image: '/images/course-aur30620.png',
+    featured: true,
+    description: 'This qualification covers the skills and knowledge required to perform a range of servicing, diagnosing, and repairing tasks on light vehicles within the automotive retail, service, and repair industry.',
+    careerOutcomes: [
+      'Automotive Light Vehicle Mechanical Technician',
+      'Diagnostic Vehicle Specialist',
+      'Automotive Service Workshop Technician',
+      'Motorsport / Fleet Service Technician'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Completion of Year 10 or 12 equivalent',
+      'IELTS 5.5 overall or equivalent recognised English proficiency',
+      'Physical ability to undertake workshop tasks safely'
+    ],
+    unitsSummary: '36 units (20 core units and 16 elective units)'
+  },
+  {
+    id: 'aur50116-diploma-of-automotive-management',
+    code: 'AUR50116',
+    title: 'Diploma of Automotive Management',
+    cricos: '118051J',
+    category: 'Automotive Mechanic',
+    categorySlug: 'automotive',
+    duration: '52 Weeks (40 Academic + 12 Holidays)',
+    terms: '4 Terms (10 weeks each)',
+    studyMode: 'Face-to-Face Classroom & Management Case Studies',
+    level: 'Diploma',
+    campus: 'Parramatta Campus, Sydney',
+    image: '/images/course-aur50116.png',
+    featured: false,
+    description: 'This qualification reflects the role of an individual who undertakes leadership and management roles within the automotive retail, service and repair industry.',
+    careerOutcomes: [
+      'Automotive Dealership Manager',
+      'Automotive Workshop Operations Director',
+      'Automotive Service Manager',
+      'Parts & Aftermarket Department Manager'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Relevant automotive trade qualification or substantial industry experience',
+      'IELTS 6.0 overall or equivalent'
+    ],
+    unitsSummary: '12 units (6 core units and 6 elective units)'
+  },
+  {
+    id: 'shb50121-diploma-of-beauty-therapy',
+    code: 'SHB50121',
+    title: 'Diploma of Beauty Therapy',
+    cricos: '112226F',
+    category: 'Beauty and Make-Up',
+    categorySlug: 'beauty',
+    duration: '52 Weeks (42 Academic + 10 Holidays)',
+    terms: '4 Terms (Intensive Salon Training)',
+    studyMode: 'Campus Clinic Practice & Real Client Treatments',
+    level: 'Diploma',
+    campus: 'Parramatta Campus & Perth College of Beauty Therapy',
+    image: '/images/course-shb50121.png',
+    featured: true,
+    description: 'Delivered in our commercial salon training clinics with glowing chandeliers and beauty stations. Learn advanced facials, body treatments, laser/IPL foundations, makeup artistry, and spa therapy with over 30 years of heritage in beauty training.',
+    careerOutcomes: [
+      'Senior Beauty Therapist',
+      'Spa Manager / Resort Spa Consultant',
+      'Dermal Aesthetics Practitioner Assistant',
+      'Salon Owner & Entrepreneur'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Completion of Australian Year 12 or equivalent',
+      'IELTS 5.5 or equivalent'
+    ],
+    unitsSummary: '29 units (20 core units and 9 elective units)'
+  },
+  {
+    id: 'rii60520-advanced-diploma-of-civil-construction-design',
+    code: 'RII60520',
+    title: 'Advanced Diploma of Civil Construction Design',
+    cricos: '107982A',
+    category: 'Building & Civil Construction',
+    categorySlug: 'construction',
+    duration: '104 Weeks (80 Academic + 24 Holidays)',
+    terms: '8 Terms (10 weeks each)',
+    studyMode: 'Face-to-Face & Computer-Aided Civil Design Labs',
+    level: 'Advanced Diploma',
+    campus: 'Parramatta Campus, Sydney',
+    image: '/images/course-rii60520.png',
+    featured: true,
+    description: 'This qualification reflects the role of an individual working as a senior civil works designer or para-professional engineer, who supports professional engineers in design, geotechnical evaluation, structural calculations, and project management.',
+    careerOutcomes: [
+      'Civil Construction Design Manager',
+      'Senior Civil Drafter / CAD Specialist',
+      'Civil Infrastructure Project Officer',
+      'Subdivision & Road Design Technician'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Completion of Year 12 or Certificate IV/Diploma in civil construction or related technical field',
+      'IELTS 6.0 overall or equivalent'
+    ],
+    unitsSummary: '12 units (5 core units and 7 elective units)'
+  },
+  {
+    id: 'rii50520-diploma-of-civil-construction-design',
+    code: 'RII50520',
+    title: 'Diploma of Civil Construction Design',
+    cricos: '118207E',
+    category: 'Building & Civil Construction',
+    categorySlug: 'construction',
+    duration: '52 Weeks (40 Academic + 12 Holidays)',
+    terms: '4 Terms (10 weeks each)',
+    studyMode: 'Face-to-Face & Technical Design Studio',
+    level: 'Diploma',
+    campus: 'Parramatta Campus, Sydney',
+    image: '/images/course-rii50520.png',
+    featured: false,
+    description: 'Covers technical drafting, civil works specifications, environmental controls, site surveying review, and materials testing support for road, bridge, and pipeline projects.',
+    careerOutcomes: [
+      'Civil Engineering Design Assistant',
+      'Civil Construction Estimator',
+      'Site Technical Officer'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Year 12 completion or equivalent',
+      'IELTS 5.5 overall or equivalent'
+    ],
+    unitsSummary: '12 units (5 core units and 7 elective units)'
+  },
+  {
+    id: 'bsb60420-advanced-diploma-of-leadership-and-management',
+    code: 'BSB60420',
+    title: 'Advanced Diploma of Leadership and Management',
+    cricos: '106077J',
+    category: 'Business and Management',
+    categorySlug: 'business',
+    duration: '52 Weeks (40 Academic + 12 Holidays)',
+    terms: '4 Terms',
+    studyMode: 'Face-to-Face Seminars & Executive Strategy Projects',
+    level: 'Advanced Diploma',
+    campus: 'Parramatta Campus, Sydney',
+    image: '/images/course-bsb60420.png',
+    featured: true,
+    description: 'Develop executive leadership, strategic corporate governance, organizational change management, and high-level decision-making competencies to steer enterprise success.',
+    careerOutcomes: [
+      'Executive General Manager',
+      'Strategic Operations Director',
+      'Management Consultant',
+      'Senior Department Head'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Completion of Diploma of Leadership and Management or relevant business management experience',
+      'IELTS 6.0 overall or equivalent'
+    ],
+    unitsSummary: '10 units (5 core units and 5 elective units)'
+  },
+  {
+    id: 'bsb50420-diploma-of-leadership-and-management',
+    code: 'BSB50420',
+    title: 'Diploma of Leadership and Management',
+    cricos: '104244D',
+    category: 'Business and Management',
+    categorySlug: 'business',
+    duration: '52 Weeks (40 Academic + 12 Holidays)',
+    terms: '4 Terms',
+    studyMode: 'Face-to-Face, Workshops & Team Simulations',
+    level: 'Diploma',
+    campus: 'Parramatta Campus, Sydney',
+    image: '/images/course-bsb50420.png',
+    featured: false,
+    description: 'Learn to lead cross-functional teams, manage risk, facilitate continuous improvement, and communicate effectively in high-pressure corporate environments.',
+    careerOutcomes: [
+      'Business Operations Team Leader',
+      'Branch Manager',
+      'Project Coordinator',
+      'Business Development Lead'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Completion of Year 12 or Certificate IV qualification',
+      'IELTS 5.5 overall or equivalent'
+    ],
+    unitsSummary: '12 units (6 core units and 6 elective units)'
+  },
+  {
+    id: 'bsb60120-advanced-diploma-of-business',
+    code: 'BSB60120',
+    title: 'Advanced Diploma of Business',
+    cricos: '106076K',
+    category: 'Business and Management',
+    categorySlug: 'business',
+    duration: '52 Weeks (40 Academic + 12 Holidays)',
+    terms: '4 Terms',
+    studyMode: 'Face-to-Face & Corporate Case Studies',
+    level: 'Advanced Diploma',
+    campus: 'Parramatta Campus, Sydney',
+    image: '/images/course-bsb60120.png',
+    featured: false,
+    description: 'Focuses on strategic planning, international business expansion, financial analysis, corporate sustainability, and organizational restructuring.',
+    careerOutcomes: [
+      'Senior Business Administrator',
+      'Corporate Strategy Officer',
+      'Commercial Operations Manager'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Completion of Diploma of Business or equivalent qualification',
+      'IELTS 6.0 overall or equivalent'
+    ],
+    unitsSummary: '10 units (5 core units and 5 elective units)'
+  },
+  {
+    id: 'bsb50120-diploma-of-business',
+    code: 'BSB50120',
+    title: 'Diploma of Business',
+    cricos: '106075M',
+    category: 'Business and Management',
+    categorySlug: 'business',
+    duration: '52 Weeks (40 Academic + 12 Holidays)',
+    terms: '4 Terms',
+    studyMode: 'Face-to-Face & Collaborative Projects',
+    level: 'Diploma',
+    campus: 'Parramatta Campus, Sydney',
+    image: '/images/course-bsb50120.png',
+    featured: false,
+    description: 'Build critical foundational knowledge in marketing communication, project management, business finance, and digital work practices.',
+    careerOutcomes: [
+      'Business Administrator',
+      'Office Manager',
+      'Operations Assistant',
+      'Account Manager'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Year 12 completion or equivalent',
+      'IELTS 5.5 overall or equivalent'
+    ],
+    unitsSummary: '12 units (5 core units and 7 elective units)'
+  },
+  {
+    id: 'bsb40120-certificate-iv-in-business',
+    code: 'BSB40120',
+    title: 'Certificate IV in Business',
+    cricos: '106074A',
+    category: 'Business and Management',
+    categorySlug: 'business',
+    duration: '52 Weeks (40 Academic + 12 Holidays)',
+    terms: '4 Terms',
+    studyMode: 'Face-to-Face Classroom & Computer Labs',
+    level: 'Certificate IV',
+    campus: 'Parramatta Campus, Sydney',
+    image: '/images/course-bsb40120.png',
+    featured: false,
+    description: 'Perfect starting qualification for establishing administrative skills, business software mastery, customer service excellence, and workplace health and safety compliance.',
+    careerOutcomes: [
+      'Executive Administrative Assistant',
+      'Records Clerk Supervisor',
+      'Customer Service Representative'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Completion of Australian Year 11/12 or equivalent',
+      'IELTS 5.5 overall or equivalent'
+    ],
+    unitsSummary: '12 units (6 core units and 6 elective units)'
+  },
+  {
+    id: 'cpc33020-certificate-iii-in-bricklaying-and-blocklaying',
+    code: 'CPC33020',
+    title: 'Certificate III in Bricklaying and Blocklaying',
+    cricos: 'Available on request',
+    category: 'Building & Civil Construction',
+    categorySlug: 'construction',
+    duration: '94 - 104 Weeks',
+    terms: '8 Terms with extensive trade practice',
+    studyMode: 'Practical Construction Yard & Technical Theory',
+    level: 'Certificate III',
+    campus: 'Sydney Trade Facility',
+    image: '/images/campus-parramatta.png',
+    featured: false,
+    description: 'Provides trade qualification training in masonry, bricklaying, blockwork, curved wall construction, footing installation, and architectural brick features for domestic and commercial structures.',
+    careerOutcomes: [
+      'Qualified Bricklayer & Blocklayer',
+      'Masonry Contractor Sub-trade',
+      'Construction Site Tradesperson'
+    ],
+    entryRequirements: [
+      'Must be 18 years of age or older',
+      'Completion of Australian Year 10 or equivalent',
+      'White Card (General Construction Induction) before yard entry',
+      'IELTS 5.5 overall'
+    ],
+    unitsSummary: '28 units (20 core units and 8 elective units)'
+  }
+];
+
+fs.writeFileSync('all_courses_master.json', JSON.stringify(courseDefs, null, 2));
+console.log('Created all_courses_master.json with', courseDefs.length, 'rich courses');
+
